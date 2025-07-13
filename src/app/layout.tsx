@@ -17,6 +17,9 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: APP_CONFIG.meta.title,
   description: APP_CONFIG.meta.description,
+  icons: {
+    icon: "/favicon.ico", 
+  },
 };
 
 export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {

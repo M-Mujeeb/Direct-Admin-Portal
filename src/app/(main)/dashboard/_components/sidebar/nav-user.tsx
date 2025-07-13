@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from "@/components/ui/sidebar";
 import { getInitials } from "@/lib/utils";
-import { useDispatch } from "react-redux";
+import { useAppDispatch } from "@/store/hooks";
 import { useRouter } from "next/navigation";
 import { handleLogout } from "@/utils/logout";
 
@@ -29,7 +29,8 @@ export function NavUser({
 }) {
   const { isMobile } = useSidebar();
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
+  
   const router = useRouter();
 
   const onLogout = () => {
