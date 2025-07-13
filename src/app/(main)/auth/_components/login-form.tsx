@@ -12,6 +12,7 @@ import { Input } from "@/components/ui/input";
 import { useLoginMutation } from "@/services/authApi";
 import { setCredentials } from "@/features/auth/authSlice";
 import { useDispatch } from "react-redux";
+import { ClipLoader } from "react-spinners";
 
 const FormSchema = z.object({
   email: z.string().email({ message: "Please enter a valid email address." }),
@@ -115,7 +116,7 @@ export function LoginForm() {
           )}
         />
         <Button className="w-full" type="submit">
-          Login
+          {isLoading ? <ClipLoader color="white" size={18} /> : "Login"}
         </Button>
       </form>
     </Form>

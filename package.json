@@ -47,6 +47,7 @@
     "react-hook-form": "^7.60.0",
     "react-redux": "^9.2.0",
     "react-resizable-panels": "^3.0.3",
+    "react-spinners": "^0.17.0",
     "recharts": "^2.15.4",
     "redux-persist": "^6.0.0",
     "simple-icons": "^15.5.0",

@@ -17,13 +17,13 @@ import { useRouter } from "next/navigation";
 import { handleLogout } from "@/utils/logout";
 
 export function AccountSwitcher() {
-
- const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch();
   const user = useAppSelector((state) => state.auth.user);
   const router = useRouter();
 
   const onLogout = () => {
     handleLogout(dispatch);
+
     router.push("/auth/login");
   };
 
@@ -36,23 +36,19 @@ export function AccountSwitcher() {
         </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="min-w-56 space-y-1 rounded-lg" side="bottom" align="end" sideOffset={4}>
-        
-          <DropdownMenuItem
-            key={user?.email}
-            className="bg-accent/50 border-l-primary border-l-2"
-          >
-            <div className="flex w-full items-center justify-between gap-2 px-1 py-1.5">
-              <Avatar className="size-9 rounded-lg">
-                <AvatarImage src={user?.profile_img || undefined} alt={user?.name} />
-                <AvatarFallback className="rounded-lg">{getInitials(user?.name || "")}</AvatarFallback>
-              </Avatar>
-              <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-semibold">{user?.name}</span>
-                <span className="truncate text-xs capitalize">{user?.role}</span>
-              </div>
+        <DropdownMenuItem key={user?.email} className="bg-accent/50 border-l-primary border-l-2">
+          <div className="flex w-full items-center justify-between gap-2 px-1 py-1.5">
+            <Avatar className="size-9 rounded-lg">
+              <AvatarImage src={user?.profile_img || undefined} alt={user?.name} />
+              <AvatarFallback className="rounded-lg">{getInitials(user?.name || "")}</AvatarFallback>
+            </Avatar>
+            <div className="grid flex-1 text-left text-sm leading-tight">
+              <span className="truncate font-semibold">{user?.name}</span>
+              <span className="truncate text-xs capitalize">{user?.role}</span>
             </div>
-          </DropdownMenuItem>
-     
+          </div>
+        </DropdownMenuItem>
+
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
           <DropdownMenuItem>

@@ -23,9 +23,9 @@ export function LayoutControls({ variant, collapsible, contentLayout }: LayoutCo
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button size="icon">
+        {/* <Button size="icon">
           <Settings />
-        </Button>
+        </Button> */}
       </PopoverTrigger>
       <PopoverContent align="end">
         <div className="flex flex-col gap-5">

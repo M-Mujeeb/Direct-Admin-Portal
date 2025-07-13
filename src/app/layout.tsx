@@ -9,6 +9,7 @@ import { Toaster } from "@/components/ui/sonner";
 import { APP_CONFIG } from "@/config/app-config";
 
 import { ReduxProvider } from "@/providers/redux-provider";
+import RouteLoading from "@/components/RouteLoading";
 
 import "./globals.css";
 
@@ -28,6 +29,7 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
       <body className={`${inter.className} min-h-screen antialiased`}>
         <ReduxProvider>
           <ThemeProvider attribute="class" defaultTheme="light" disableTransitionOnChange enableSystem={false}>
+             <RouteLoading />
             {children}
             <Toaster />
           </ThemeProvider>
