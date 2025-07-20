@@ -160,7 +160,7 @@ export function NavMain({ items }: NavMainProps) {
     <>
       <SidebarGroup>
         <SidebarGroupContent className="flex flex-col gap-2">
-          <SidebarMenu>
+          {/* <SidebarMenu>
             <SidebarMenuItem className="flex items-center gap-2">
               <SidebarMenuButton
                 tooltip="Quick Create"
@@ -178,7 +178,7 @@ export function NavMain({ items }: NavMainProps) {
                 <span className="sr-only">Inbox</span>
               </Button>
             </SidebarMenuItem>
-          </SidebarMenu>
+          </SidebarMenu> */}
         </SidebarGroupContent>
       </SidebarGroup>
       {items.map((group) => (
