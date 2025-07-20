@@ -1,7 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
+
 import { usePathname } from "next/navigation";
+
 import { ClipLoader } from "react-spinners";
 
 export default function RouteLoading() {

@@ -13,11 +13,9 @@ import { LayoutControls } from "./_components/sidebar/layout-controls";
 import { SearchDialog } from "./_components/sidebar/search-dialog";
 import { ThemeSwitcher } from "./_components/sidebar/theme-switcher";
 
-
 export default async function Layout({ children }: Readonly<{ children: ReactNode }>) {
   const cookieStore = await cookies();
   const defaultOpen = cookieStore.get("sidebar_state")?.value === "true";
-
 
   const sidebarVariant = await getSidebarVariant();
   const sidebarCollapsible = await getSidebarCollapsible();
@@ -44,8 +42,7 @@ export default async function Layout({ children }: Readonly<{ children: ReactNod
             <div className="flex items-center gap-2">
               <LayoutControls contentLayout={contentLayout} variant={sidebarVariant} collapsible={sidebarCollapsible} />
               <ThemeSwitcher />
-                <AccountSwitcher />
-         
+              <AccountSwitcher />
             </div>
           </div>
         </header>

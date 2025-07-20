@@ -1,6 +1,6 @@
 import Image from "next/image";
-import { LoginForm } from "../_components/login-form";
 
+import { LoginForm } from "../_components/login-form";
 
 export default function LoginV1() {
   return (
@@ -8,13 +8,7 @@ export default function LoginV1() {
       <div className="bg-primary hidden lg:block lg:w-1/3">
         <div className="flex h-full flex-col items-center justify-center p-12 text-center">
           <div className="space-y-6">
-            <Image
-            src="/logo.png"
-            alt="DR Logo"
-            width={80}
-            height={80}
-            className="mx-auto"
-            />
+            <Image src="/logo.png" alt="DR Logo" width={80} height={80} className="mx-auto" />
             <div className="space-y-2">
               <h1 className="text-primary-foreground text-5xl font-medium">DIRECT RAABTA</h1>
 

@@ -1,10 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
+import { setupListeners } from "@reduxjs/toolkit/query";
+import { combineReducers } from "redux";
 import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage"; // default: localStorage
-import { setupListeners } from "@reduxjs/toolkit/query";
-import { authApi } from "../services/authApi";
-import authReducer from "../features/auth/authSlice";
-import { combineReducers } from "redux";
+
+import authReducer from "../features/auth/auth-slice";
+import { authApi } from "../services/auth-api";
 
 const rootReducer = combineReducers({
   auth: authReducer,
@@ -21,8 +22,7 @@ const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 export const store = configureStore({
   reducer: persistedReducer,
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware({ serializableCheck: false }).concat(authApi.middleware),
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware({ serializableCheck: false }).concat(authApi.middleware),
 });
 
 export const persistor = persistStore(store);

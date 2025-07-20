@@ -72,7 +72,6 @@ export const sidebarItems: NavGroup[] = [
         title: "Plans",
         url: "/dashboard/e-commerce",
         icon: ShoppingBag,
-       
       },
       {
         title: "Payment Histories",

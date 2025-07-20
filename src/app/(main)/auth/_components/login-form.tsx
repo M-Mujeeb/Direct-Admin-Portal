@@ -1,18 +1,20 @@
 "use client";
 
+import { useRouter } from "next/navigation";
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
+import { ClipLoader } from "react-spinners";
 import { toast } from "sonner";
 import { z } from "zod";
-import { useRouter } from "next/navigation";
+
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useLoginMutation } from "@/services/authApi";
-import { setCredentials } from "@/features/auth/authSlice";
-import { useDispatch } from "react-redux";
-import { ClipLoader } from "react-spinners";
+import { setCredentials } from "@/features/auth/auth-slice";
+import { useLoginMutation } from "@/services/auth-api";
 
 const FormSchema = z.object({
   email: z.string().email({ message: "Please enter a valid email address." }),
@@ -34,21 +36,23 @@ export function LoginForm() {
     },
   });
 
-   const onSubmit = async (data: z.infer<typeof FormSchema>) => {
+  const onSubmit = async (data: z.infer<typeof FormSchema>) => {
     try {
       const response = await login({
         email: data.email,
         password: data.password,
       }).unwrap();
-      
+
       if (response.status) {
-        document.cookie = `auth-token=${response.data.token}; path=/; ${data.remember ? 'max-age=2592000;' : ''}`;
-        
-        dispatch(setCredentials({
-          user: response.data.user,
-          token: response.data.token
-        }));
-        
+        document.cookie = `auth-token=${response.data.token}; path=/; ${data.remember ? "max-age=2592000;" : ""}`;
+
+        dispatch(
+          setCredentials({
+            user: response.data.user,
+            token: response.data.token,
+          }),
+        );
+
         toast.success("Login successful");
         router.push("/dashboard");
       } else {
@@ -59,7 +63,6 @@ export function LoginForm() {
       console.error("Login error:", error);
     }
   };
-
 
   return (
     <Form {...form}>
