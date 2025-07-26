@@ -64,8 +64,8 @@ export const dashboardColumns: ColumnDef<z.infer<typeof sectionSchema>>[] = [
     enableSorting: false,
   },
   {
-    accessorKey: "target",
-    header: ({ column }) => <DataTableColumnHeader className="w-full text-left" column={column} title="Profile Image" />,
+    accessorKey: "about",
+    header: ({ column }) => <DataTableColumnHeader className="w-full text-left" column={column} title="About" />,
     cell: ({ row }) => (
       <form
         onSubmit={(e) => {
@@ -89,6 +89,82 @@ export const dashboardColumns: ColumnDef<z.infer<typeof sectionSchema>>[] = [
     ),
     enableSorting: false,
   },
- 
-  
+  {
+    accessorKey: "profile_image",
+    header: ({ column }) => <DataTableColumnHeader className="w-full text-left" column={column} title="Profile Image" />,
+    cell: ({ row }) => (
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          toast.promise(new Promise((resolve) => setTimeout(resolve, 1000)), {
+            loading: `Saving ${row.original.header}`,
+            success: "Done",
+            error: "Error",
+          });
+        }}
+      >
+        <Label htmlFor={`${row.original.id}-limit`} className="sr-only">
+          Limit
+        </Label>
+        <Input
+          className="hover:bg-input/30 focus-visible:bg-background dark:hover:bg-input/30 dark:focus-visible:bg-input/30 h-8 w-16 border-transparent bg-transparent text-right shadow-none focus-visible:border dark:bg-transparent"
+          defaultValue={row.original.limit}
+          id={`${row.original.id}-limit`}
+        />
+      </form>
+    ),
+    enableSorting: false,
+  },
+  {
+    accessorKey: "type",
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Celebrity Type" />,
+    cell: ({ row }) => {
+      const isAssigned = row.original.reviewer !== "Assign reviewer";
+
+      if (isAssigned) {
+        return row.original.reviewer;
+      }
+
+      return (
+        <>
+          <Label htmlFor={`${row.original.id}-reviewer`} className="sr-only">
+            Reviewer
+          </Label>
+          <Select>
+            <SelectTrigger
+              className="w-38 **:data-[slot=select-value]:block **:data-[slot=select-value]:truncate"
+              size="sm"
+              id={`${row.original.id}-reviewer`}
+            >
+              <SelectValue placeholder="Assign reviewer" />
+            </SelectTrigger>
+            <SelectContent align="end">
+              <SelectItem value="Eddie Lake">Eddie Lake</SelectItem>
+              <SelectItem value="Jamik Tashpulatov">Jamik Tashpulatov</SelectItem>
+            </SelectContent>
+          </Select>
+        </>
+      );
+    },
+    enableSorting: false,
+  },
+  {
+    id: "actions",
+    cell: () => (
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="ghost" className="data-[state=open]:bg-muted text-muted-foreground flex size-8" size="icon">
+            <EllipsisVertical />
+            <span className="sr-only">Open menu</span>
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end" className="w-32">
+          <DropdownMenuItem>Edit</DropdownMenuItem>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem variant="destructive">Delete</DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    ),
+    enableSorting: false,
+  },
 ];

@@ -60,22 +60,22 @@ export const sidebarItems: NavGroup[] = [
       },
       {
         title: "Celebrity",
-        url: "dashboard/celebrities",
+        url: "/dashboard/celebrities",
         icon: Users,
       },
       {
         title: "Categories",
-        url: "/dashboard/analytics",
+        url: "/dashboard/categories",
         icon: Gauge,
       },
       {
         title: "Plans",
-        url: "/dashboard/e-commerce",
+        url: "/dashboard/plans",
         icon: ShoppingBag,
       },
       {
         title: "Payment Histories",
-        url: "/dashboard/academy",
+        url: "/dashboard/payment-histories",
         icon: ReceiptText,
       },
       {
