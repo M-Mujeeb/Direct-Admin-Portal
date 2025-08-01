@@ -1,26 +1,12 @@
 import { ColumnDef } from "@tanstack/react-table";
-import { CircleCheck, Loader, EllipsisVertical } from "lucide-react";
-import { toast } from "sonner";
+import { CircleCheck, XCircle } from "lucide-react";
 import { z } from "zod";
 
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 import { DataTableColumnHeader } from "../../../../../components/data-table/data-table-column-header";
-
 import { sectionSchema } from "./schema";
-import { TableCellViewer } from "./table-cell-viewer";
 
 export const dashboardColumns: ColumnDef<z.infer<typeof sectionSchema>>[] = [
   {
@@ -29,20 +15,20 @@ export const dashboardColumns: ColumnDef<z.infer<typeof sectionSchema>>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "header",
+    accessorKey: "name",
     header: ({ column }) => <DataTableColumnHeader column={column} title="Name" />,
-    cell: ({ row }) => {
-      return <TableCellViewer item={row.original} />;
-    },
+    cell: ({ row }) => (
+      <div className="font-medium text-sm">{row.original.name}</div>
+    ),
     enableSorting: false,
   },
   {
-    accessorKey: "type",
+    accessorKey: "email",
     header: ({ column }) => <DataTableColumnHeader column={column} title="Email" />,
     cell: ({ row }) => (
       <div className="w-32">
         <Badge variant="outline" className="text-muted-foreground px-1.5">
-          {row.original.type}
+          {row.original.email}
         </Badge>
       </div>
     ),
@@ -52,43 +38,39 @@ export const dashboardColumns: ColumnDef<z.infer<typeof sectionSchema>>[] = [
     accessorKey: "status",
     header: ({ column }) => <DataTableColumnHeader column={column} title="Status" />,
     cell: ({ row }) => (
-      <Badge variant="outline" className="text-muted-foreground px-1.5">
-        {row.original.status === "Done" ? (
-          <CircleCheck className="stroke-border fill-green-500 dark:fill-green-400" />
+      <Badge variant="outline" className="text-muted-foreground px-1.5 gap-1 flex items-center">
+        {row.original.is_verified ? (
+          <>
+            <CircleCheck className="w-4 h-4 stroke-border fill-green-500 dark:fill-green-400" />
+            <span>Verified</span>
+          </>
         ) : (
-          <Loader />
+          <>
+            <XCircle className="w-4 h-4 stroke-border fill-red-500 dark:fill-red-400" />
+            <span>Unverified</span>
+          </>
         )}
-        {row.original.status}
       </Badge>
     ),
     enableSorting: false,
   },
   {
-    accessorKey: "target",
-    header: ({ column }) => <DataTableColumnHeader className="w-full text-left" column={column} title="Profile Image" />,
-    cell: ({ row }) => (
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          toast.promise(new Promise((resolve) => setTimeout(resolve, 1000)), {
-            loading: `Saving ${row.original.header}`,
-            success: "Done",
-            error: "Error",
-          });
-        }}
-      >
-        <Label htmlFor={`${row.original.id}-target`} className="sr-only">
-          Target
-        </Label>
-        <Input
-          className="hover:bg-input/30 focus-visible:bg-background dark:hover:bg-input/30 dark:focus-visible:bg-input/30 h-8 w-16 border-transparent bg-transparent text-right shadow-none focus-visible:border dark:bg-transparent"
-          defaultValue={row.original.target}
-          id={`${row.original.id}-target`}
-        />
-      </form>
+    accessorKey: "profile_image",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Profile Image" />
     ),
+    cell: ({ row }) => {
+      const imageUrl = row.original.profile_image;
+      const name = row.original.name;
+      return (
+        <div className="flex items-center justify-start">
+          <Avatar className="h-10 w-10">
+            <AvatarImage src={imageUrl || ""} alt={name} />
+            <AvatarFallback>{name?.[0]?.toUpperCase() || "U"}</AvatarFallback>
+          </Avatar>
+        </div>
+      );
+    },
     enableSorting: false,
   },
- 
-  
 ];

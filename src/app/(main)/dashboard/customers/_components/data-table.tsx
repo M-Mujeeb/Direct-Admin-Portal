@@ -2,10 +2,8 @@
 
 import * as React from "react";
 
-import { Plus } from "lucide-react";
 import { z } from "zod";
 
-import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent } from "@/components/ui/tabs";
 import { useDataTableInstance } from "@/hooks/use-data-table-instance";
 

@@ -64,9 +64,9 @@ export const sidebarItems: NavGroup[] = [
         icon: Users,
       },
       {
-        title: "Categories",
-        url: "/dashboard/categories",
-        icon: Gauge,
+        title: "Voice Notes",
+        url: "/dashboard/voice-notes",
+        icon: ShoppingBag,
       },
       {
         title: "Plans",
@@ -80,7 +80,7 @@ export const sidebarItems: NavGroup[] = [
       },
       {
         title: "Reports",
-        url: "/dashboard/logistics",
+        url: "/dashboard/reports",
         icon: Forklift,
       },
     ],

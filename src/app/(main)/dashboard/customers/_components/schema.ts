@@ -1,11 +1,11 @@
 import { z } from "zod";
 
 export const sectionSchema = z.object({
-  id: z.number(),
-  header: z.string(),
-  type: z.string(),
-  status: z.string(),
-  target: z.string(),
-  limit: z.string(),
-  reviewer: z.string(),
+  id: z.string(),
+  name: z.string(),
+  email: z.string().email(),
+  role: z.string(),
+  is_verified: z.boolean(),
+  createdAt: z.string(),
+  profile_image: z.string().nullable().optional(),
 });

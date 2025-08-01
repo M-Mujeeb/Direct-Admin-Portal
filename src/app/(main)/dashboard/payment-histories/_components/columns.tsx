@@ -28,44 +28,9 @@ export const dashboardColumns: ColumnDef<z.infer<typeof sectionSchema>>[] = [
     enableSorting: false,
     enableHiding: false,
   },
-  {
-    accessorKey: "header",
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Name" />,
-    cell: ({ row }) => {
-      return <TableCellViewer item={row.original} />;
-    },
-    enableSorting: false,
-  },
-  {
-    accessorKey: "type",
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Email" />,
-    cell: ({ row }) => (
-      <div className="w-32">
-        <Badge variant="outline" className="text-muted-foreground px-1.5">
-          {row.original.type}
-        </Badge>
-      </div>
-    ),
-    enableSorting: false,
-  },
-  {
-    accessorKey: "status",
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Status" />,
-    cell: ({ row }) => (
-      <Badge variant="outline" className="text-muted-foreground px-1.5">
-        {row.original.status === "Done" ? (
-          <CircleCheck className="stroke-border fill-green-500 dark:fill-green-400" />
-        ) : (
-          <Loader />
-        )}
-        {row.original.status}
-      </Badge>
-    ),
-    enableSorting: false,
-  },
-  {
+    {
     accessorKey: "target",
-    header: ({ column }) => <DataTableColumnHeader className="w-full text-right" column={column} title="Target" />,
+    header: ({ column }) => <DataTableColumnHeader className="w-full text-left" column={column} title="Date & Time" />,
     cell: ({ row }) => (
       <form
         onSubmit={(e) => {
@@ -90,8 +55,61 @@ export const dashboardColumns: ColumnDef<z.infer<typeof sectionSchema>>[] = [
     enableSorting: false,
   },
   {
-    accessorKey: "limit",
-    header: ({ column }) => <DataTableColumnHeader className="w-full text-right" column={column} title="Limit" />,
+    accessorKey: "type",
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Customer" />,
+    cell: ({ row }) => (
+      <div className="w-32">
+        <Badge variant="outline" className="text-muted-foreground px-1.5">
+          {row.original.type}
+        </Badge>
+      </div>
+    ),
+    enableSorting: false,
+  },
+  {
+    accessorKey: "status",
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Plan" />,
+    cell: ({ row }) => (
+      <Badge variant="outline" className="text-muted-foreground px-1.5">
+        {row.original.status === "Done" ? (
+          <CircleCheck className="stroke-border fill-green-500 dark:fill-green-400" />
+        ) : (
+          <Loader />
+        )}
+        {row.original.status}
+      </Badge>
+    ),
+    enableSorting: false,
+  },
+  {
+    accessorKey: "target",
+    header: ({ column }) => <DataTableColumnHeader className="w-full text-left" column={column} title="Amount" />,
+    cell: ({ row }) => (
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          toast.promise(new Promise((resolve) => setTimeout(resolve, 1000)), {
+            loading: `Saving ${row.original.header}`,
+            success: "Done",
+            error: "Error",
+          });
+        }}
+      >
+        <Label htmlFor={`${row.original.id}-target`} className="sr-only">
+          Target
+        </Label>
+        <Input
+          className="hover:bg-input/30 focus-visible:bg-background dark:hover:bg-input/30 dark:focus-visible:bg-input/30 h-8 w-16 border-transparent bg-transparent text-right shadow-none focus-visible:border dark:bg-transparent"
+          defaultValue={row.original.target}
+          id={`${row.original.id}-target`}
+        />
+      </form>
+    ),
+    enableSorting: false,
+  },
+  {
+    accessorKey: "status",
+    header: ({ column }) => <DataTableColumnHeader className="w-full text-left" column={column} title="Status" />,
     cell: ({ row }) => (
       <form
         onSubmit={(e) => {
@@ -115,39 +133,7 @@ export const dashboardColumns: ColumnDef<z.infer<typeof sectionSchema>>[] = [
     ),
     enableSorting: false,
   },
-  {
-    accessorKey: "reviewer",
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Reviewer" />,
-    cell: ({ row }) => {
-      const isAssigned = row.original.reviewer !== "Assign reviewer";
-
-      if (isAssigned) {
-        return row.original.reviewer;
-      }
-
-      return (
-        <>
-          <Label htmlFor={`${row.original.id}-reviewer`} className="sr-only">
-            Reviewer
-          </Label>
-          <Select>
-            <SelectTrigger
-              className="w-38 **:data-[slot=select-value]:block **:data-[slot=select-value]:truncate"
-              size="sm"
-              id={`${row.original.id}-reviewer`}
-            >
-              <SelectValue placeholder="Assign reviewer" />
-            </SelectTrigger>
-            <SelectContent align="end">
-              <SelectItem value="Eddie Lake">Eddie Lake</SelectItem>
-              <SelectItem value="Jamik Tashpulatov">Jamik Tashpulatov</SelectItem>
-            </SelectContent>
-          </Select>
-        </>
-      );
-    },
-    enableSorting: false,
-  },
+ 
   {
     id: "actions",
     cell: () => (

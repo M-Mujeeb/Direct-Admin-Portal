@@ -30,36 +30,31 @@ export const dashboardColumns: ColumnDef<z.infer<typeof sectionSchema>>[] = [
   },
   {
     accessorKey: "header",
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Name" />,
-    cell: ({ row }) => {
-      return <TableCellViewer item={row.original} />;
-    },
-    enableSorting: false,
-  },
-  {
-    accessorKey: "type",
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Description" />,
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Fan Name" />,
     cell: ({ row }) => (
       <div className="w-32">
-        <Badge variant="outline" className="text-muted-foreground px-1.5">
-          {row.original.type}
-        </Badge>
+          {row.original.header}
       </div>
     ),
     enableSorting: false,
   },
-  {
-    accessorKey: "status",
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Amount" />,
+   {
+    accessorKey: "type",
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Celebrity" />,
     cell: ({ row }) => (
-      <Badge variant="outline" className="text-muted-foreground px-1.5">
-        {row.original.status === "Done" ? (
-          <CircleCheck className="stroke-border fill-green-500 dark:fill-green-400" />
-        ) : (
-          <Loader />
-        )}
-        {row.original.status}
-      </Badge>
+      <div className="w-32">
+          {row.original.type}
+      </div>
+    ),
+    enableSorting: false,
+  },
+   {
+    accessorKey: "type",
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Date & Time" />,
+    cell: ({ row }) => (
+      <div className="w-32">
+          {row.original.type}
+      </div>
     ),
     enableSorting: false,
   },
@@ -78,25 +73,22 @@ export const dashboardColumns: ColumnDef<z.infer<typeof sectionSchema>>[] = [
     ),
     enableSorting: false,
   },
- 
- 
   {
-    id: "actions",
-    cell: () => (
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button variant="ghost" className="data-[state=open]:bg-muted text-muted-foreground flex size-8" size="icon">
-            <EllipsisVertical />
-            <span className="sr-only">Open menu</span>
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end" className="w-32">
-          <DropdownMenuItem>Edit</DropdownMenuItem>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem variant="destructive">Delete</DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
+    accessorKey: "target",
+    header: ({ column }) => <DataTableColumnHeader className="w-full text-left" column={column} title="Action" />,
+    cell: ({ row }) => (
+      <>
+       <Badge variant="outline" className="text-muted-foreground px-1.5">
+        Accept
+      </Badge>
+       <Badge variant="outline" className="text-muted-foreground px-1.5">
+        Reject
+      </Badge>
+      </>
+      
     ),
     enableSorting: false,
   },
+ 
+  
 ];
