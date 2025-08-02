@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Plus } from "lucide-react";
 import { z } from "zod";
+import { toast } from "sonner";
 
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
@@ -20,28 +21,14 @@ import { DataTablePagination } from "../../../../../components/data-table/data-t
 import { withDndColumn } from "../../../../../components/data-table/table-utils";
 
 import { dashboardColumns } from "./columns";
-import { sectionSchema } from "./schema";
+import { sectionSchema, celebritySchema } from "./schema";
 import CropperDialog from "@/components/CropperDialog";
+import { useCreateCelebrityMutation } from "@/services/auth-api";
+import { ClipLoader } from "react-spinners";
+import { blobUrlToFile } from "@/lib/utils";
 
-const celebritySchema = z
-  .object({
-    name: z.string().min(1, "Name is required"),
-    email: z.string().email("Invalid email"),
-    about: z.string().optional(),
-    type: z.string().optional(),
-    password: z
-      .string()
-      .min(6, "Password must be at least 6 characters")
-      .max(20, "Password must be at most 20 characters"),
-    confirmPassword: z.string(),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords do not match",
-    path: ["confirmPassword"],
-  });
-
-export function DataTable({ data: initialData }: { data: z.infer<typeof sectionSchema>[] }) {
-  const [data, setData] = React.useState(() => initialData);
+export function DataTable({ data, refetch }: { data: z.infer<typeof sectionSchema>[]; refetch: () => void }) {
+  // const [data, setData] = React.useState(() => initialData);
   const columns = withDndColumn(dashboardColumns);
   const table = useDataTableInstance({ data, columns, getRowId: (row) => row.id.toString() });
 
@@ -50,6 +37,8 @@ export function DataTable({ data: initialData }: { data: z.infer<typeof sectionS
   const [cropModalOpen, setCropModalOpen] = React.useState(false);
   const [imageToCrop, setImageToCrop] = React.useState<string | null>(null);
   const [croppedImage, setCroppedImage] = React.useState<string | null>(null);
+
+  const [createCelebrity, { isLoading: isCreating }] = useCreateCelebrityMutation();
 
   const form = useForm<z.infer<typeof celebritySchema>>({
     resolver: zodResolver(celebritySchema),
@@ -72,12 +61,31 @@ export function DataTable({ data: initialData }: { data: z.infer<typeof sectionS
     }
   };
 
-  const onSubmit = (values: z.infer<typeof celebritySchema>) => {
-    const payload = {
-      ...values,
-      profileImage: croppedImage,
-    };
-    console.log("Payload to submit:", payload);
+  const onSubmit = async (values: z.infer<typeof celebritySchema>) => {
+    try {
+      const formData = new FormData();
+      formData.append("name", values.name);
+      formData.append("email", values.email);
+      formData.append("about", values.about || "");
+      formData.append("type", values.type || "");
+      formData.append("password", values.password);
+
+      if (croppedImage) {
+        const file = await blobUrlToFile(croppedImage, "profile.jpg");
+        formData.append("profile_image", file);
+      }
+
+      const res = await createCelebrity(formData).unwrap();
+      console.log("Success:", res);
+      toast.success(res.message);
+      setOpen(false);
+      refetch();
+      form.reset();
+      setCroppedImage(null);
+    } catch (error) {
+      console.error("Create Error:", error);
+      toast.error("Failed to create celebrity");
+    }
   };
 
   return (
@@ -89,7 +97,6 @@ export function DataTable({ data: initialData }: { data: z.infer<typeof sectionS
         onCropComplete={(cropped) => {
           setProfileImage(null);
           setCroppedImage(cropped);
-          setProfileImage(cropped);
         }}
       />
       <Tabs defaultValue="outline" className="w-full flex-col justify-start gap-6">
@@ -141,7 +148,7 @@ export function DataTable({ data: initialData }: { data: z.infer<typeof sectionS
                         <img src={croppedImage} alt="Cropped" className="h-20 w-20 rounded-full object-cover" />
                         <button
                           type="button"
-                          className="absolute -top-2 -right-2 rounded-full text-red-500 cursor-pointer"
+                          className="absolute -top-2 -right-2 cursor-pointer rounded-full text-red-500"
                           onClick={() => {
                             setCroppedImage(null);
                             setProfileImage(null);
@@ -207,7 +214,7 @@ export function DataTable({ data: initialData }: { data: z.infer<typeof sectionS
                     />
                   </div>
                   <Button type="submit" className="w-full">
-                    Submit
+                    {isCreating ? <ClipLoader color="white" size={18} /> : "Submit"}
                   </Button>
                 </form>
               </Form>
@@ -216,7 +223,7 @@ export function DataTable({ data: initialData }: { data: z.infer<typeof sectionS
         </div>
         <TabsContent value="outline" className="relative flex flex-col gap-4 overflow-auto">
           <div className="overflow-hidden rounded-lg border">
-            <DataTableNew dndEnabled table={table} columns={columns} onReorder={setData} />
+            <DataTableNew dndEnabled table={table} columns={columns}  />
           </div>
           <DataTablePagination table={table} />
         </TabsContent>
